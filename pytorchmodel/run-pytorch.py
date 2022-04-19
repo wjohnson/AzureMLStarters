@@ -12,10 +12,13 @@ if __name__ == "__main__":
                              compute_target='cpu-cluster')
 
     # set up pytorch environment
+    # This will result in an image build
     env = Environment.from_conda_specification(
         name='pytorch-env',
         file_path='./pytorchmodel/pytorch-env.yml'
     )
+    # Alternatively, we could use a pre-built model
+    # env = Environment.get(ws, name='AzureML-pytorch-1.10-ubuntu18.04-py38-cuda11-gpu')
     config.run_config.environment = env
 
     run = experiment.submit(config)
