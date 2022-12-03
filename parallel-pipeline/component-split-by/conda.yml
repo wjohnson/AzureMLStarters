@@ -1,0 +1,7 @@
+name: processexcel
+dependencies:
+  - python=3.7
+  - pip
+  - pip:
+    - pandas>=1.1,<1.2
+    - xlrd==1.2.0

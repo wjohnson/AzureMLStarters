@@ -1,0 +1,31 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+name: split-file
+display_name: Split a given tabular file based on a column
+version: 1
+
+inputs: 
+  data:
+    type: uri_file
+  split_column:
+    type: string
+
+outputs:
+  split_files_folder:
+    type: uri_folder
+  
+code: ./
+
+environment:
+  name: excel-processing-environment
+  # Have to use complete image address or receiving authentication to docker error
+  image: mcr.microsoft.com/azureml/curated/sklearn-0.24-ubuntu18.04-py37-cpu:46
+  conda_file: ./conda.yml
+  description: Combines azure ml sklearn base with conda file for excel processing
+
+command: >-
+  python split.py 
+    --data ${{inputs.data}}
+    --split_column ${{inputs.split_column}}
+    --split_files_folder ${{outputs.split_files_folder}}

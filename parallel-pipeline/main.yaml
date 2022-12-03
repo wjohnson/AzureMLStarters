@@ -1,0 +1,83 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: parallel processing pipeline
+description: Demonstrate parallel processing
+settings:
+    default_compute: azureml:cpu-cluster
+
+outputs: 
+  pipeline_job_predictions:
+    mode: upload
+
+jobs:
+  split_file_into_files:
+    type: command
+    compute: azureml:cpu-cluster
+    component: file:./component-split-by/split-file.yml
+    inputs:
+      data: 
+        type: uri_file
+        path: azureml:online_retail_II:1
+      split_column: "Country"
+    outputs:
+      split_files_folder:
+        type: uri_folder
+        mode: rw_mount
+  
+  parallel_process:
+    type: parallel
+    compute: azureml:cpu-cluster
+    inputs:
+      data:
+        type: uri_folder
+        path: ${{parent.jobs.split_file_into_files.outputs.split_files_folder}}
+    outputs:
+      many_models_output_folder:
+        type: uri_folder
+        mode: rw_mount
+      testing_data_output_path:
+        type: uri_file
+        mode: rw_mount
+    input_data: ${{inputs.data}}
+    mini_batch_size: "10"
+    mini_batch_error_threshold: 5
+    resources:
+      instance_count: 2
+    max_concurrency_per_instance: 2
+    retry_settings:
+      max_retries: 2
+      timeout: 60
+
+    task:
+      type: run_function
+      code: ./train
+      entry_script: train.py
+      environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+      program_arguments: >-
+        --data ${{inputs.data}}
+        --many_models_output_folder ${{outputs.many_models_output_folder}}
+        --testing_data_output_path ${{outputs.testing_data_output_path}}
+      append_row_to: ${{outputs.testing_data_output_path}}
+  
+  merge_models:
+    type: command
+    compute: azureml:cpu-cluster
+    component: file:./component-merge-models/merge-models.yml
+    inputs:
+      many_models_path: ${{parent.jobs.parallel_process.outputs.many_models_output_folder}}
+    outputs:
+      final_model:
+        type: custom_model
+        mode: rw_mount
+
+  score_data:
+    type: command
+    compute: azureml:cpu-cluster
+    component: file:./component-score/score.yml
+    inputs:
+      # You probably want to change this to be a new dataset
+      models: ${{parent.jobs.parallel_process.outputs.many_models_output_folder}}
+      testing_data_path: ${{parent.jobs.parallel_process.outputs.testing_data_output_path}}
+      
+    outputs:
+      prediction: ${{parent.outputs.pipeline_job_predictions}}

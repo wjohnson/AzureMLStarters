@@ -1,0 +1,23 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+name: merge-models
+display_name: Merge models stored in a models/ folder
+version: 1
+
+inputs: 
+  many_models_path:
+    type: uri_folder
+
+outputs:
+  final_model:
+    type: custom_model
+  
+code: ./
+
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+
+command: >-
+  python merge-models.py 
+    --many_models_path ${{inputs.many_models_path}}
+    --final_model ${{outputs.final_model}}
