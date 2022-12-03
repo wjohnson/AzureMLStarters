@@ -21,22 +21,14 @@ Hyperparameter sweeps take a training script and command
 * Use Hyperparameter Sweeps in a [pipeline](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-use-sweep-in-pipeline)
 * Use Hyperparameters Sweeps in a [job](https://learn.microsoft.com/en-us/azure/machine-learning/reference-yaml-job-sweep)
 
+Follow these steps to launch the sample:
 
-### Hyperparameter Setup
-* Upload the bank marketing dataset below.
-
-### Hyperparameter Jobs
+* Upload the [bank marketing](#bank-marketing) dataset below.
 * Execute this CLI command
   ```bash
   az ml job create --file ./hyperparameter/job-hyperparam-opt.yml
   ```
 
-### Hyperparameter Pipeline Sweep
-
-* Execute this CLI command
-  ```bash
-  az ml job create --file ./hyperparameter/main-hyperparam-opt.yml
-  ```
 
 ## Parallel Training on Many Files
 
