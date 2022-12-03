@@ -1,0 +1,50 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: multisteppipeline
+description: Tune hyperparameters using TF component
+settings:
+    default_compute: azureml:cpu-cluster
+
+outputs: 
+  pipeline_job_trained_model:
+    mode: upload
+  pipeline_job_evaluation_report:
+    mode: upload
+
+jobs:
+  fill_dates:
+    type: command
+    compute: azureml:cpu-cluster
+    component: azureml:dense_dates@latest
+    inputs:
+      data: 
+        type: uri_file
+        path: azureml://datastores/workspaceblobstore/paths/UI/2022-10-31_145139_UTC/ItemDeDupe.csv
+      datetime_column: "InvoiceDateOnly"
+      dependent: "Quantity"
+    outputs:
+      test_data:
+
+  lag_df:
+    type: command
+    compute: azureml:cpu-cluster
+    component: azureml:lagging@latest
+    inputs:
+      data: 
+        path: ${{parent.jobs.fill_dates.outputs.test_data}}
+      dependent: "Quantity"
+      lags: "1,2,7,14"
+    outputs:
+      test_data:
+
+  train_step:
+    type: command
+    compute: azureml:cpu-cluster
+    component: file:./train-src/train.yml
+    inputs:
+      data: 
+        path: ${{parent.jobs.lag_df.outputs.test_data}}
+      random_state: 42
+    outputs:
+      model_output: ${{parent.outputs.pipeline_job_trained_model}}
+      test_data: ${{parent.outputs.pipeline_job_evaluation_report}}

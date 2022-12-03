@@ -1,0 +1,33 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+name: train_model
+display_name: train_model
+version: 1
+
+inputs: 
+  data:
+    type: uri_folder
+  fit_intercept:
+    type: boolean
+    default: true
+  random_state:
+    type: integer
+    default: 42
+
+outputs:
+  model_output:
+    type: mlflow_model
+  test_data:
+    type: uri_folder
+  
+code: ./
+
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+
+command: >-
+  python train.py 
+    --data ${{inputs.data}}
+    --random_state ${{inputs.random_state}}
+    --model_output ${{outputs.model_output}}
+    --test_data ${{outputs.test_data}}
