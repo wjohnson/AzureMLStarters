@@ -1,0 +1,14 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+
+# Supported paths include:
+# Tutorial: https://learn.microsoft.com/en-us/azure/machine-learning/how-to-create-data-assets?tabs=cli
+# local: ./<path>/<file>
+# blob:  https://<account_name>.blob.core.windows.net/<container_name>/<path>/<file>
+# ADLS gen2: abfss://<file_system>@<account_name>.dfs.core.windows.net/<path>/<file>
+# Datastore: azureml://datastores/<data_store_name>/paths/<path>/<file>
+
+type: uri_file
+name: online_retail_II
+description: The online_retail_II.xlsx available from Dr. Daqing Chen, Course Director MSc Data Science. chend '@' lsbu.ac.uk, School of Engineering, London South Bank University, London SE1 0AA, UK. as downloaded from https://archive.ics.uci.edu/ml/machine-learning-databases/00502/online_retail_II.xlsx
+# This path appears to be relative to where the yaml file is located
+path: ./retail/online_retail_II.xlsx
