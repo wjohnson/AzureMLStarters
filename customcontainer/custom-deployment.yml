@@ -1,0 +1,24 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: custom-deployment
+endpoint_name: mycustom-endpoint
+model:
+  name: my-python-object
+  version: 1
+  path: ./pyobject
+environment_variables:
+  MODEL_BASE_PATH: /var/azureml-app/azureml-models/my-dummy-model/1
+  MODEL_NAME: my-dummy-model
+environment:
+  image: RANDOMGUID.azurecr.io/custom/fastapi:v1
+  inference_config:
+    liveness_route:
+      port: 8080
+      path: /healthcheck
+    readiness_route:
+      port: 8080
+      path: /healthcheck
+    scoring_route:
+      port: 8080
+      path: /discount
+instance_type: Standard_DS2_v2
+instance_count: 1
