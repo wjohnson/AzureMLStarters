@@ -1,0 +1,26 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+name: score
+display_name: Score a file based on 
+version: 1
+
+inputs: 
+  models:
+    type: uri_folder
+  testing_data_path:
+    type: uri_folder
+
+outputs:
+  prediction:
+    type: uri_file
+  
+code: ./
+
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+
+command: >-
+  python score.py 
+    --testing_data_path ${{inputs.testing_data_path}}
+    --models ${{inputs.models}}
+    --prediction ${{outputs.prediction}}
