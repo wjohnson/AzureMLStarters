@@ -51,14 +51,4 @@ limits:
 compute: azureml:cpu-cluster
 display_name: bank-sweep-example
 experiment_name: bank-sweep-example
-description: Bank Marketing hyperparam sweep
-
-# predict_step:
-#   type: command
-#   inputs:
-#     model: ${{parent.jobs.sweep_step.outputs.model_output}}
-#     test_data: ${{parent.jobs.sweep_step.outputs.test_data}}
-#   outputs:
-#     predict_result:
-#   component: ./predict.yml
-
+description: Bank Marketing hyperparameter sweep
