@@ -1,0 +1,28 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+name: prep_data
+display_name: Prepare the data
+version: 1
+
+inputs: 
+  data:
+    type: uri_folder
+
+outputs:
+  prepared_data:
+    type: uri_file
+  
+code: ./
+
+environment:
+  name: excel-processing-environment
+  # Have to use complete image address or receiving authentication to docker error
+  image: mcr.microsoft.com/azureml/curated/sklearn-0.24-ubuntu18.04-py37-cpu:46
+  conda_file: ./conda.yml
+  description: Combines azure ml sklearn base with conda file for excel processing
+
+command: >-
+  python prep-data.py 
+    --data ${{inputs.data}}
+    --prepared_data ${{outputs.prepared_data}}

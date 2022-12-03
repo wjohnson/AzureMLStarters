@@ -12,6 +12,17 @@ outputs:
     mode: upload
 
 jobs:
+  prep_data:
+    type: command
+    compute: azureml:cpu-cluster
+    component: ./component-prep-data/prep-data.yml
+    inputs:
+      data: 
+        type: uri_file
+        path: azureml:online_retail_II:1
+    outputs:
+      prepared_data:
+
   fill_dates:
     type: command
     compute: azureml:cpu-cluster
@@ -19,7 +30,7 @@ jobs:
     inputs:
       data: 
         type: uri_file
-        path: azureml://datastores/workspaceblobstore/paths/UI/2022-10-31_145139_UTC/ItemDeDupe.csv
+        path: ${{parent.jobs.prep_data.outputs.prepared_data}}
       datetime_column: "InvoiceDateOnly"
       dependent: "Quantity"
     outputs:
