@@ -51,23 +51,23 @@ You can use a parallel task on an Azure ML pipeline to train on micro batches of
   az ml job create --file ./parallel-pipeline/main.yaml
   ```
 
-  ## Registered Components
+## Registered Components
 
-  You can register components and re-use them.
+You can register components and re-use them.
 
-  * [Registered Components Microsoft Docs](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-create-component-pipelines-ui)
+* [Registered Components Microsoft Docs](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-create-component-pipelines-ui)
 
-  * Set up the [Online Retail 2 dataset](#online-retail-2)
-  * Execute the command below to register a couple components you might re-use
-    ```bash
-    az ml component create --file ./registered-components/component-lag/lagger.yml
-    az ml component create --file ./registered-components/component-dense-dates/densedate.yml
-    ```
-    * If you are running these commands multiple times you may need to add the `--version` flag.
-  * Execute the command below to run the pipeline using local and registered components
-    ```bash
-    az ml job create --file ./registered-components/main.yml
-    ```
+* Set up the [Online Retail 2 dataset](#online-retail-2)
+* Execute the command below to register a couple components you might re-use
+  ```bash
+  az ml component create --file ./registered-components/component-lag/lagger.yml
+  az ml component create --file ./registered-components/component-dense-dates/densedate.yml
+  ```
+  * If you are running these commands multiple times you may need to add the `--version` flag.
+* Execute the command below to run the pipeline using local and registered components
+  ```bash
+  az ml job create --file ./registered-components/main.yml
+  ```
 
 ## Custom Containers
 
