@@ -1,0 +1,14 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+
+# Supported paths include:
+# Tutorial: https://learn.microsoft.com/en-us/azure/machine-learning/how-to-create-data-assets?tabs=cli
+# local: ./<path>/<file>
+# blob:  https://<account_name>.blob.core.windows.net/<container_name>/<path>/<file>
+# ADLS gen2: abfss://<file_system>@<account_name>.dfs.core.windows.net/<path>/<file>
+# Datastore: azureml://datastores/<data_store_name>/paths/<path>/<file>
+
+type: uri_file
+name: bankmarketing
+description: The bank-full.csv available from [Moro et al., 2014] S. Moro, P. Cortez and P. Rita. A Data-Driven Approach to Predict the Success of Bank Telemarketing. Decision Support Systems, Elsevier, 62:22-31, June 2014 as downloaded from https://archive.ics.uci.edu/ml/machine-learning-databases/00222/bank.zip
+# This path appears to be relative to where the yaml file is located
+path: ./bank/bank-full.csv
