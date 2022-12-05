@@ -203,3 +203,7 @@ with engine.connect() as conn:
 
 
 ```
+# Open Questions
+
+* What's the right way to get a model folder recognized as Job Output and not Data Output?
+* What's the right way to set up a file to be read in initially and then passed around (seems to be mode: rw_mount)
