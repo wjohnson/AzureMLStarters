@@ -1,4 +1,10 @@
-FROM YOURACRNAME.azurecr.io/USERNAME/IMAGENAME:latest
-# Above, define your starting container
-# Define the entry point for your container
-ENTRYPOINT [ "uvicorn","src.main.python.app:app","--host", "0.0.0.0","--port","8080"]
+FROM python:3.8-slim-buster
+
+WORKDIR /python-docker
+
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
+
+COPY ./server .
+
+CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0", "-p", "3000"]

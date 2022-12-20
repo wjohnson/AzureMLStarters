@@ -9,16 +9,16 @@ environment_variables:
   MODEL_BASE_PATH: /var/azureml-app/azureml-models/my-dummy-model/1
   MODEL_NAME: my-dummy-model
 environment:
-  image: RANDOMGUID.azurecr.io/custom/fastapi:v1
+  image: <ACR_NAME>.azurecr.io/flasml:latest
   inference_config:
     liveness_route:
-      port: 8080
-      path: /healthcheck
+      port: 3000
+      path: /am/alive
     readiness_route:
-      port: 8080
-      path: /healthcheck
+      port: 3000
+      path: /am/ready
     scoring_route:
-      port: 8080
-      path: /discount
+      port: 3000
+      path: /score
 instance_type: Standard_DS2_v2
 instance_count: 1
