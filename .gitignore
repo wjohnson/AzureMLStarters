@@ -165,3 +165,5 @@ datasets/*
 downloads/
 !datasets/bank-marketing.yml
 !datasets/online-retail-ii.yml
+upload-score/model/*
+!upload-score/model/.placeholder

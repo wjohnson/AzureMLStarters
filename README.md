@@ -4,6 +4,7 @@ These starters are designed to help you understand what options are available an
 
 Examples and resource links covered:
 
+* [Quickstart with a local model](#upload--register-a-model-and-use-it-in-inference)
 * [Hyperparameter Sweeps](#hyperparmeter-sweeps)
 * [Parallel Training on Many Files](#parallel-training-on-many-files)
 * [Custom Containers](#custom-containers)
@@ -13,6 +14,29 @@ Certain data sources are important to connect to but require using other python 
 
 * [Connect to Snowflake](#connect-to-snowflake)
 * [Connect to Azure Synapse](#connect-to-azure-synapse)
+
+## Upload / Register a Model and Use it in Inference
+
+To quickly get started, you can upload and register a model and then run a pipeline with a dataset.
+
+```bash
+cd upload-score
+az ml model create -f ./register-model.yml
+```
+
+To run the scoring pipeline using this new model, create some data to be uploaded during pipeline submission.
+
+```bash
+python ./quickdata.py
+az ml job create --file ./main.yml
+```
+
+
+Additional Reading
+
+* [How to manage models](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-manage-models?tabs=cli%2Cuse-local)
+
+
 
 ## Hyperparmeter Sweeps
 
@@ -197,10 +221,13 @@ engine = create_engine(connection_url).execution_options(
     isolation_level="AUTOCOMMIT"
 )
 
+# Reading from SQL
 with engine.connect() as conn:
     df = pd.read_sql_table("table_name", conn)
     print(df.shape)
 
+# Writing to SQL
+df.to_sql(name="exampleWrite", con=engine, schema="dbo", if_exists="append")
 
 ```
 # Open Questions

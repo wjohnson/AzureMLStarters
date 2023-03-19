@@ -1,0 +1,25 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: quick scoring pipeline 5
+description: Demonstrate dynamic dataset, model, and path 
+settings:
+    default_compute: azureml:cpu-cluster
+
+jobs:
+  score_data:
+    type: command
+    compute: azureml:cpu-cluster
+    component: file:./score/score.yml
+    inputs:
+      model:
+        type: custom_model
+        path: azureml:local-file-example@latest
+      testing_data_path:
+        type: uri_file
+        path: ./quickdata.csv
+        mode: ro_mount
+      
+    outputs:
+      prediction:
+        type: uri_file
+        mode: rw_mount

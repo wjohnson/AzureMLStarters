@@ -1,0 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/model.schema.json
+name: local-file-example
+path: ./model/model.joblib
+description: Model created from local file.
